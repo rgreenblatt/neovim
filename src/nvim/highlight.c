@@ -7,6 +7,7 @@
 #include "nvim/highlight.h"
 #include "nvim/highlight_defs.h"
 #include "nvim/map.h"
+#include "nvim/popupmnu.h"
 #include "nvim/screen.h"
 #include "nvim/syntax.h"
 #include "nvim/ui.h"
@@ -146,8 +147,13 @@ int hl_get_ui_attr(int idx, int final_id, bool optional)
     available = true;
   }
 
-  if (attrs.hl_blend == -1 && HLF_PNI <= idx && idx <= HLF_PST && p_pb > 0) {
-    attrs.hl_blend = (int)p_pb;
+  if (HLF_PNI <= idx && idx <= HLF_PST) {
+    if (attrs.hl_blend == -1 && p_pb > 0) {
+      attrs.hl_blend = (int)p_pb;
+    }
+    if (pum_drawn()) {
+      must_redraw_pum = true;
+    }
   }
 
   if (optional && !available) {
@@ -260,6 +266,7 @@ void hl_invalidate_blends(void)
   map_clear(int, int)(blend_attr_entries);
   map_clear(int, int)(blendthrough_attr_entries);
   highlight_changed();
+  update_window_hl(curwin, true);
 }
 
 // Combine special attributes (e.g., for spelling) with other attributes

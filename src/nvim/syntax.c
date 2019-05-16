@@ -7044,6 +7044,9 @@ static void highlight_list_one(const int id)
   didh = highlight_list_arg(id, didh, LIST_STRING,
                             0, sgp->sg_rgb_sp_name, "guisp");
 
+  didh = highlight_list_arg(id, didh, LIST_INT,
+      sgp->sg_blend+1, NULL, "blend");
+
   if (sgp->sg_link && !got_int) {
     (void)syn_list_header(didh, 9999, id);
     didh = true;
@@ -7393,6 +7396,7 @@ static int syn_add_group(char_u *name)
   hlgp->sg_rgb_bg = -1;
   hlgp->sg_rgb_fg = -1;
   hlgp->sg_rgb_sp = -1;
+  hlgp->sg_blend = -1;
   hlgp->sg_name_u = vim_strsave_up(name);
 
   return highlight_ga.ga_len;               /* ID is index plus one */

@@ -4385,7 +4385,7 @@ static char *set_num_option(int opt_idx, char_u *varp, long value,
     hl_invalidate_blends();
     pum_grid.blending = (p_pb > 0);
     if (pum_drawn()) {
-      pum_recompose();
+      pum_redraw();
     }
   } else if (pp == &p_pyx) {
     if (p_pyx != 0 && p_pyx != 2 && p_pyx != 3) {
